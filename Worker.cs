@@ -59,6 +59,7 @@ namespace CoWinSlotNotifier
 
             DateTime startTime = DateTime.Now;
             _logger.LogInformation("Worker started at: {time}", DateTimeOffset.Now);
+            int times = 0;
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -111,7 +112,10 @@ namespace CoWinSlotNotifier
                 }
                 else
                 {
-                    _logger.LogInformation($"{DateTime.Now.ToString()}: No new open slots found");
+                    if (times == 100) {
+                        times = 0;
+                        _logger.LogInformation($"{DateTime.Now.ToString()}: No new open slots found");
+                    }
                 }
 
                 // Remove centers that don't have vaccines anymore
